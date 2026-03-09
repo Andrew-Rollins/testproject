@@ -33,3 +33,10 @@ def login_v2(username, password):
     if len(password) < 8:
         raise ValueError("Password too short")
     return login(username, password)
+    
+def validate_input(username, password):
+    if not username or not password:
+        raise ValueError("Username and password required")
+    if len(password) < 8:
+        raise ValueError("Password too short")
+    return True
