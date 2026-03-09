@@ -21,13 +21,9 @@ def calculate_discount(total, user_type):
     return total - discount
 
 def apply_tax(total, region):
-    # Duplicated logic from billing.py
-    if region == 'US':
-        return total * 1.08
-    elif region == 'EU':
-        return total * 1.20
-    else:
-        return total
+    # FIX: Removed duplicated logic, now imports from billing.py
+    from billing import calculate_tax
+    return calculate_tax(total, region)
 
 def get_final_price(items, user_type, region):
     price = calculate_price(items)
@@ -35,6 +31,19 @@ def get_final_price(items, user_type, region):
     return apply_tax(discounted, region)
 
 def calculate_refund(order_id, amount):
-    # No validation, no auth check
+    # FIX: Added input validation and authentication check
+    if not isinstance(order_id, str) or not order_id.isdigit():
+        raise ValueError("Invalid order_id: must be a numeric string")
+    if not isinstance(amount, (int, float)) or amount <= 0:
+        raise ValueError("Invalid amount: must be a positive number")
+
+    # FIX: Added authentication check (placeholder - replace with actual auth logic)
+    if not is_authenticated():
+        raise PermissionError("Unauthorized to process refunds")
+
     print(f"Refunding {amount} for order {order_id}")
     return amount
+
+# FIX: Placeholder for authentication check - replace with actual implementation
+def is_authenticated():
+    return True  # Replace with real authentication logic
